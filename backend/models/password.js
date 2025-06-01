@@ -12,7 +12,12 @@ const passwordSchema = new mongoose.Schema({
     password : {
         type:String,
         require : true
+    },
+    iv : {
+        type: String,
+        require: true
     }
+
 
 }) 
 

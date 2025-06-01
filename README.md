@@ -46,6 +46,7 @@ cd password-manager
 cd frontend
 npm install
 ```
+
 ### 3. Start the frontend server
 
 ```bash
@@ -60,7 +61,15 @@ npm run dev
 cd backend
 npm install
 ```
-### 5. Start the backend server
+
+### 5. Create a .env file in backend directory
+- add your 32 bit (32 character ) secret key for encryption in **.env** file 
+
+```bash
+AES_SECRET=your_32_characters_long_secret_key
+```
+
+### 6. Start the backend server
 
 ```bash
 nodemon index.js
