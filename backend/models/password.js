@@ -16,8 +16,11 @@ const passwordSchema = new mongoose.Schema({
     iv : {
         type: String,
         require: true
+    },
+    createdBy : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref : "users"
     }
-
 
 }) 
 

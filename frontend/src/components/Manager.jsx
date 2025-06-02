@@ -1,80 +1,97 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { ExternalLink, Clipboard } from 'lucide-react';
-import { v4 as uuidv4 } from 'uuid';
 import { Bounce, ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const Manager = () => {
+    const navigate = useNavigate()
     const passRef = useRef(null);
     const [showPassword, setShowPassword] = useState(false);
     const [passwords, setPasswords] = useState([])
     const [form, setForm] = useState({ site: "", username: "", password: "" })
 
     const fetchPasswords = async () => {
-        const response = await fetch('http://localhost:2000/password')
-        const pass = await response.json()
+        try {
+            const response = await fetch('http://localhost:2000/password', {
+                method: "GET",
+                credentials: 'include'
+            })
+            if (response.status === 401) {
+                setPasswords([])
+                return;
+            }
+            const pass = await response.json()
+            if (pass) {
+                setPasswords(pass)
+            }
+            else {
+                setPasswords([])
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
 
-        if(pass){
-            setPasswords(pass)
-        }
-        else{
-            setPasswords([])
-        }
+
         console.log("passwords : ", passwords)
     }
     useEffect(() => {
         fetchPasswords();
     }, [])
 
-    // useEffect(() => {
-    //     localStorage.setItem('passwords' , JSON.stringify(passwords))
-    //     // setPasswords(JSON.parse(passwords))
-
-    // }, [passwords])
 
     const togglePassword = () => {
         setShowPassword((prev) => !prev);
         passRef.current.type = showPassword ? "password" : "text";
     };
 
-    const savePassword = async () => {
-        const response = await fetch('http://localhost:2000/password/', {
-            method: "POST" ,
-            headers : {
-                "Content-Type": "application/json",
-            },
-            body : JSON.stringify(form)
-        })
-        const result = await response.json();
-        console.log(result)
-        if(response.status == 201){
+    // const toastOptions = {
+    //     position: "top-right",
+    //     autoClose: 3000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     theme: "dark",
+    //     transition: Bounce
+    // }
 
-            toast.success('Password Saved!', {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-                transition: Bounce
-            }); 
+    const savePassword = async () => {
+
+        try {
+            const response = await fetch('http://localhost:2000/password/', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include", // to send cookies
+                body: JSON.stringify(form)
+            });
+            console.log("response : ", response)
+            if (response.status === 401) {
+                navigate('/login');
+                setTimeout(() => {
+                    toast.error('Please log in to save password',);
+                }, 300);
+
+            }
+            const result = await response.json();
+            console.log(result);
+            if (response.status == 201) {
+
+                toast.success('Password Saved!');
+            }
+            else {
+                toast.success('Password Edited!');
+            }
+
+            setForm({ site: "", username: "", password: "" });
+            fetchPasswords();
+
+        } catch (error) {
+            console.error("Error:", error);
+            toast.error("Something went wrong!");
         }
-        else{
-            toast.success('Password Edited!', {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-                transition: Bounce
-            }); 
-        }
-        setForm({ site: "", username: "", password: "" })
-        fetchPasswords()
     }
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value })
@@ -84,20 +101,12 @@ const Manager = () => {
     const handleDelete = async (id) => {
         if (confirm("Do you want to delete the password?")) {
             const response = await fetch(`http://localhost:2000/password/${id}`, {
-                method: "DELETE"
+                method: "DELETE",
+                credentials: "include",
             })
             const result = await response.json()
             console.log(result);
-            toast.error('Deleted successfully!', {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark", 
-            });
+            toast.error('Deleted successfully!');
             fetchPasswords();
         }
     }
@@ -114,17 +123,7 @@ const Manager = () => {
     }
 
     const handleCopy = (item) => {
-        toast('Coppied to clipboard!', {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-            transition: Bounce
-        });
+        toast('Coppied to clipboard!');
         navigator.clipboard.writeText(item)
 
     }
@@ -145,7 +144,7 @@ const Manager = () => {
                 transition={Bounce}
             />
 
-            <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[size:6rem_4rem]"></div>
+            {/* <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[size:6rem_4rem]"></div> */}
             <div className="container bg-blue-30 rounded-xl mx-auto max-w-5xl m-4 p-3 sm:p-4 md:p-6">
                 <div className="text-black flex flex-col">
                     <div className="text-center py-2">

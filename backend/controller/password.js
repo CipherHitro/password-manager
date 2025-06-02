@@ -11,8 +11,9 @@ async function handleAddPassword(req, res) {
       username,
       password: encrypted.encryptedData,
       iv: encrypted.iv,
+      createdBy : req.user._id
     });
-    return res.status(200).json({ message: "Updated", result });
+    return res.status(200).json({ message: "Updated" });
   }
 
   const result = await Password.create({
@@ -20,16 +21,17 @@ async function handleAddPassword(req, res) {
     username,
     password: encrypted.encryptedData,
     iv: encrypted.iv,
+    createdBy : req.user._id
   });
   if (result) {
-    return res.status(201).json({ message: "Password Saved!", result });
+    return res.status(201).json({ message: "Password Saved!" });
   }
 }
 async function handleDeletePassword(req, res) {
   const id = req.params.id;
   const result = await Password.findByIdAndDelete({ _id: id });
   if (result) {
-    return res.status(200).json({ message: "Deleted", result });
+    return res.status(200).json({ message: "Deleted" });
   }
 
   // const result = await Password.findByIdAndDelete({id})
@@ -37,7 +39,8 @@ async function handleDeletePassword(req, res) {
 }
 
 async function handleGetAllPasswords(req, res) {
-  const passwords = await Password.find({});
+
+  const passwords = await Password.find({createdBy : req.user._id});
 
   if (passwords) {
     const decryptedEntries = passwords.map((entry) => ({

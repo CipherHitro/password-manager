@@ -1,10 +1,13 @@
 # 🔐 PassMan – Responsive Password Manager Web App
 
-**PassMan** is a sleek, responsive Password Manager built with **React**, **Tailwind CSS**, and **React Toastify**. Users can securely save their website credentials (site, username and password) and access them anytime – all from a smooth and intuitive UI. It uses MongoDB, Express, and Mongoose for backend storage.
+**PassMan** is a secure and responsive Password Manager built with **React**, **Tailwind CSS**, and **Node.js**. It allows users to safely store and manage their website credentials (site, username/email, and password) with a clean and modern interface. The app supports password encryption, user authentication using JWT, and toast notifications for enhanced user experience and security.
 
 ## 🚀 Features
 
 - ✅ Responsive design (mobile-first)
+- 🔐 User Authentication System (Sign up / Login)
+- 🧂 Password Hashing with **bcryptjs** for user credentials
+- 🔒 **AES-256** Encryption for saving passwords in the database
 - 💾 Store website, username/email, and password securely
 - ✨ Interactive animated icons using Lordicon
 - ⚙️ Backend with Express.js & MongoDB (Mongoose)
@@ -22,6 +25,7 @@
 - **React.js**
 - **Tailwind CSS**
 - **React Toastify**
+- **React Router**
 
 ### Backend:
 
@@ -29,7 +33,8 @@
 - **Express.js**
 - **MongoDB**
 - **Mongoose**
-
+- **bcryptjs**  – for hashing user passwords
+- **crypto**  – for AES-256 encryption and decryption
 
 ## 🧑‍💻 Getting Started
 
@@ -62,11 +67,19 @@ cd backend
 npm install
 ```
 
-### 5. Create a .env file in backend directory
+### 5. Create a .env file in backend directory and add these things
 - add your 32 bit (32 character ) secret key for encryption in **.env** file 
 
 ```bash
 AES_SECRET=your_32_characters_long_secret_key
+```
+- add your secret key for JWT(json web token)
+```bash
+secret=anything@123
+```
+- add your mongdb URI 
+```bash
+MONGO_URI=mongodb://localhost:27017/password-manager
 ```
 
 ### 6. Start the backend server

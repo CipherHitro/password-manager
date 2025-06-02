@@ -2,18 +2,33 @@ import { useState } from 'react'
 import './App.css'
 import Manager from './components/Manager'
 import Navbar from './components/Navbar'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
+import Main from './pages/Main'
+
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 function App() {
   const [count, setCount] = useState(0)
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: <><Main/></>
+    },
+    {
+      path: '/login',
+      element: <><Login/></>
+    },
+    {
+      path: '/signup',
+      element: <><Signup/></>
+    },
+  ])
 
   return (
     <>
-      <main className='bg-white bg-[size:6rem_4rem]'>
-        <div className="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_500px_at_50%_200px,#C9EBFF,transparent)]">
-        <Navbar />
-        <Manager />
-        </div>
-      </main>
+      <RouterProvider router={router}/>
+      
     </>
   )
 }
