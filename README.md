@@ -1,22 +1,21 @@
 # 🔐 PassMan – Responsive Password Manager Web App
 
-**PassMan** is a secure and responsive Password Manager built with **React**, **Tailwind CSS**, and **Node.js**. It allows users to safely store and manage their website credentials (site, username/email, and password) with a clean and modern interface. The app supports password encryption, user authentication using JWT, and toast notifications for enhanced user experience and security.
+**PassMan** is a secure and responsive Password Manager built with **React**, **Tailwind CSS**, and **Node.js**. It allows users to safely store and manage their website credentials (site, username/email, and password) with a clean and modern interface. The app supports password encryption, user authentication using JWT, and toast notifications for enhanced user experience and security. And now supports a complete Forgot Password flow with OTP verification.
 
 ## 🚀 Features
 
-- ✅ Responsive design (mobile-first)
-- 🔐 User Authentication System (Sign up / Login)
-- 🧂 Password Hashing with **bcryptjs** for user credentials
-- 🔒 **AES-256** Encryption for saving passwords in the database
-- 💾 Store website, username/email, and password securely
-- ✨ Interactive animated icons using Lordicon
-- ⚙️ Backend with Express.js & MongoDB (Mongoose)
-- 📋 One-click copy to clipboard
-- 👁️ Toggle password visibility
-- 🗑️ Edit/Delete saved passwords
+- ✅ Mobile-first responsive design
+- 🔐 Login/Signup system with secure session handling (JWT + Cookies)
+- 🧂 Passwords hashed using bcryptjs
+- 🔒 Saved credentials encrypted with AES-256
+- 🔁 Forgot Password feature with OTP via email (OTP valid for 10 mins & max 3 attempts)
+- 📧 Email support using Nodemailer
+- 📋 Copy to clipboard functionality
+- 👁️ Toggle visibility of saved passwords
+- 🗑️ Edit/Delete password entries
+- ✨ Beautiful animated icons (Lordicon)
 - 🔔 Toast notifications using React Toastify
-- 🎨 Beautiful animated icons via Lordicon
-- 🌙 Light theme with a modern layout
+- 🌗 Light theme with a modern UI
 
 ## 🛠️ Tech Stack
 
@@ -33,8 +32,10 @@
 - **Express.js**
 - **MongoDB**
 - **Mongoose**
-- **bcryptjs**  – for hashing user passwords
-- **crypto**  – for AES-256 encryption and decryption
+- **Bcryptjs**  – for hashing user passwords
+- **Crypto**  – for AES-256 encryption and decryption
+- **Jsonwebtoken** – for JWT-based auth
+- **Nodemailer** – for sending OTP emails
 
 ## 🧑‍💻 Getting Started
 
@@ -68,18 +69,24 @@ npm install
 ```
 
 ### 5. Create a .env file in backend directory and add these things
-- add your 32 bit (32 character ) secret key for encryption in **.env** file 
-
 ```bash
+# add your 32 bit (32 character ) secret key for encryption in **.env** file 
 AES_SECRET=your_32_characters_long_secret_key
-```
-- add your secret key for JWT(json web token)
-```bash
+
+# add your secret key for JWT(json web token)
 secret=anything@123
-```
-- add your mongdb URI 
-```bash
+
+# add your mongdb URI 
 MONGO_URI=mongodb://localhost:27017/password-manager
+
+# add PORT 
+PORT=2000
+
+# add your email address
+EMAIL_USER=example@gmail.com
+
+# add your email app password
+EMAIL_APP_PASSWORD=abcd pqrs wxyz mnop
 ```
 
 ### 6. Start the backend server
@@ -87,7 +94,3 @@ MONGO_URI=mongodb://localhost:27017/password-manager
 ```bash
 nodemon index.js
 ```
-
-
-
-
