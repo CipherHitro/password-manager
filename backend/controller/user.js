@@ -6,7 +6,6 @@ const PasswordResetToken = require("../models/passwordResetToken");
 const { sendOTPEmail, testEmailConnection } = require('../utils/emailService')
 async function handleSignup(req, res) {
   const { fullName, email, password } = req.body;
-
   const salt = bcrypt.genSaltSync(10);
   const passHash = bcrypt.hashSync(password, salt);
 
@@ -21,7 +20,9 @@ async function handleSignup(req, res) {
   }
 }
 async function handleLogin(req, res) {
-  const { email, password } = req.body;
+  const { email, password , rememberMe } = req.body;
+  // console.log(req.body)
+
   const user = await User.findOne({ email });
   if (!user) {
     return res.status(400).json({ message: "Invalid Credentials" });
@@ -34,7 +35,7 @@ async function handleLogin(req, res) {
   const token = setUser(user);
 
   // res.cookie('uid', token)
-  return res.status(200).json({ message: "Logged in successfully", token });
+  return res.status(200).json({ message: "Logged in successfully", token , rememberMe});
 }
 
 async function handleForgotPassword(req, res) {

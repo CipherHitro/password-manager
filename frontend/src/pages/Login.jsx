@@ -8,6 +8,8 @@ import Cookies from 'js-cookie'
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+
   const navigate = useNavigate();
   const {
     register,
@@ -21,20 +23,29 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     console.log(data);
-
+    const loginData = {
+      email: data.email,
+      password: data.password,
+      rememberMe
+    }
     const response = await fetch('http://localhost:2000/user/login', {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(loginData)
     })
     console.log("response: ", response)
     const result = await response.json();
     console.log("json : ", result)
 
     if (response.ok) {
-      Cookies.set('uid', result.token)
+      if(result.rememberMe){
+        Cookies.set('uid', result.token,  { expires: 7, path: '/' })
+      }
+      else{
+        Cookies.set('uid', result.token,  { expires: 1, path: '/' })
+      }
       navigate('/');
       setTimeout(() => {
         toast.success('Logged in successfully!');
@@ -159,6 +170,7 @@ const Login = () => {
                       <input
                         id="remember-me"
                         type="checkbox"
+                        onChange={(e) => setRememberMe(e.target.checked)}
                         className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                       />
                       <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
