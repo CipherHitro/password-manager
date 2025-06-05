@@ -75,13 +75,13 @@ const Navbar = () => {
           </div> : <div className="buttons flex gap-3">
 
 
-            <NavLink to="/Login"> <button className='flex border border-white p-2 rounded-full px-4 gap-1 text-md cursor-pointer hover:bg-slate-500 hover:font-semibold'>
+            <NavLink to="/login"> <button className='flex border border-white p-2 rounded-full px-4 gap-1 text-md cursor-pointer hover:bg-slate-500 hover:font-semibold'>
               <LogIn />
               <span className="hidden md:inline">Login</span>
             </button>
             </NavLink>
 
-            <NavLink to="/Signup"><button className='flex border border-white p-2 rounded-full px-4 gap-1 text-md cursor-pointer hover:bg-slate-500 hover:font-semibold'>
+            <NavLink to="/signup"><button className='flex border border-white p-2 rounded-full px-4 gap-1 text-md cursor-pointer hover:bg-slate-500 hover:font-semibold'>
               <UserRoundPlus />
               <span className="hidden md:inline">SignUp</span>
             </button></NavLink>
